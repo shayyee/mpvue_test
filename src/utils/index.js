@@ -32,3 +32,12 @@ export function showModal (title, content) {
     showCancel: false
   })
 }
+export function showLoading(text) {
+  wx.showLoading({
+    title: text
+  })
+}
+
+export function hideLoading() {
+  wx.hideLoading()
+}

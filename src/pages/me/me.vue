@@ -4,16 +4,21 @@
             <img class="userinfo-avatar" style="width: 200rpx;height: 200rpx;" :src="userinfo.avatarUrl" alt="">
             <p class="userinfo-nickname">{{userinfo.nickName}}</p>
         </div>
+        <year-progress></year-progress>
         <button v-if='userinfo.openId' @click="scanBook" class="btn">添加图书</button>
         <button v-else open-type="getUserInfo" lang="zh_CN" class="btn" @getuserinfo="doLogin">点击登录</button>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {showSuccess, request, showModal} from '../../utils/index'
+  import {showSuccess,showModal,showLoading,hideLoading} from '../../utils/index'
   import qcloud from 'wafer2-client-sdk'
   import config from '../../utils/config'
+  import YearProgress from '../../components/yearProgress.vue'
   export default {
+    components: {
+      YearProgress
+    },
     data() {
       return {
         userinfo: null
@@ -30,6 +35,7 @@
     methods: {
       doLogin (e) {
         let _this = this;
+        showLoading('正在登录...');
         // 查看是否授权
         wx.getSetting({
           success: (res) => {
@@ -39,6 +45,7 @@
               qcloud.login({
                 success: function (userinfo) {
                   _this.userinfo = userinfo;
+                  hideLoading()
                   showSuccess('登录成功')
                   wx.setStorageSync('userinfo',userinfo)
                 },
