@@ -12,6 +12,7 @@
 
 <script type="text/ecmascript-6">
   import {showSuccess,showModal,showLoading,hideLoading} from '../../utils/index'
+  import {post} from '../../utils/api'
   import qcloud from 'wafer2-client-sdk'
   import config from '../../utils/config'
   import YearProgress from '../../components/yearProgress.vue'
@@ -33,13 +34,21 @@
         };
     },
     methods: {
+      async addBook (isbn) {
+        const res = await post('/addbook', {
+          isbn,
+          openid: this.userinfo.openId
+        })
+        console.log(res)
+        showModal('添加成功',`${res.data.title}添加成功`)
+      },
       doLogin (e) {
         let _this = this;
-        showLoading('正在登录...');
         // 查看是否授权
         wx.getSetting({
           success: (res) => {
             if (res.authSetting['scope.userInfo']) {
+              showLoading('正在登录...');
               // 已经授权，可以直接调用 getUserInfo 获取头像昵称
               qcloud.setLoginUrl(config.loginUrl)
               qcloud.login({
@@ -47,7 +56,7 @@
                   _this.userinfo = userinfo;
                   hideLoading()
                   showSuccess('登录成功')
-                  wx.setStorageSync('userinfo',userinfo)
+                  wx.setStorageSync('userinfo', userinfo)
                 },
                 fail: function (err) {
 //                  console.log('登录失败', err);
@@ -60,7 +69,9 @@
       scanBook () {
         wx.scanCode({
           success: (res) => {
-            console.log(res)
+            if (res.result) {
+              this.addBook(res.result)
+            }
           }
         })
       }
