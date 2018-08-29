@@ -19,8 +19,8 @@ module.exports = async (ctx) => {
           msg: '图书已存在'
         }
       }
+      return
     }
-    return
     let url = 'https://api.douban.com/v2/book/isbn/'+isbn
     const bookinfo = await getJSON(url)
     const rate = bookinfo.rating.average
@@ -29,7 +29,7 @@ module.exports = async (ctx) => {
       return `${v.title} ${v.count}`
     }).join(',')
     const author = bookinfo.author.join(',')
-    try{
+    try {
       await mysql('books').insert({
         isbn, openid, rate, title, image, alt, publisher, summary, price, tags, author
       })

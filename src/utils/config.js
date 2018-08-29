@@ -4,10 +4,12 @@
 
 const host = 'http://10.200.0.92:5757/weapp'
 const ERR_OK = 0
+const pageSize = 12
 
 const config = {
   host,
   ERR_OK,
+  pageSize,
   loginUrl: `${host}/login`,
   userUrl: `${host}/user`
 }

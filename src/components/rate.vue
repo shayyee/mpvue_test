@@ -1,7 +1,7 @@
 <template>
     <div class='rate'>
         <span>☆☆☆☆☆</span>
-        <div class="hollow" :style='style'>
+        <div class="hollow" :style="style">
             ★★★★★
         </div>
 
@@ -15,7 +15,7 @@
     },
     computed: {
       style () {
-        return `width:${this.value * 0.4}em`
+        return `width:${this.value * 0.41}em`
       }
     }
   }
