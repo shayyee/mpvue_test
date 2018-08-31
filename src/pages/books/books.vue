@@ -17,14 +17,17 @@
       return {
         books: [],
         page: 0,
-        more: true
+        more: true,
+        tops: []
       }
     },
     mounted() {
       this.getList(true)
+      this.getTop()
     },
     onPullDownRefresh() {
       this.getList(true)
+      this.getTop()
     },
     onReachBottom() {
       if(!this.more) {
@@ -53,6 +56,10 @@
           this.more = false
         }
         wx.hideNavigationBarLoading()
+      },
+      async getTop() {
+        const tops = await get('/top')
+        this.tops = tops.list
       }
     }
   }
